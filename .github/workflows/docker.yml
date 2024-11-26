@@ -26,6 +26,9 @@ jobs:
             - name: Get rust-version 
               id: get-rust-version 
               run: |
+                echo "Current working directory: $(pwd)"
+                ls -la $(pwd)
+                ls -la ./../.github/scripts/
                 RUST_VERSION=$(./../.github/scripts/toml_reader.sh Cargo.toml package rust-version)
 
             - name: Extract version (if stable)
