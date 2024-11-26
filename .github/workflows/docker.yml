@@ -67,10 +67,10 @@ jobs:
             - name: Get rust-version 
               id: get-rust-version 
               run: |
-                echo "Current working directory: $(pwd)"
-                ls -la $(pwd)
-                ls -la ./.github/scripts/
-                RUST_VERSION=$(./.github/scripts/toml_reader.sh ./anchor/Cargo.toml package rust-version)
+                echo "RUST_VERSION=$(./.github/scripts/toml_reader.sh ./anchor/Cargo.toml package rust-version)" >> $GITHUB_ENV
+          
+            - name: Get latest version of stable Rust
+              run: echo "rust version is ${{ env.RUST_VERSION }}"
 
             - name: Retrieve Docker credentials from Vault
               uses: hashicorp/vault-action@v2
