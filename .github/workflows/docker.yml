@@ -96,7 +96,7 @@ jobs:
             - name: Cross build binaries
               run: |
                   cargo install cross
-                  env CROSS_PROFILE=${{ matrix.profile }} CROSS_FEATURES=${{ env.CROSS_FEATURES }} make ${{ env.MAKE_CMD }}
+                  env CROSS_PROFILE=${{ matrix.profile }}  make ${{ env.MAKE_CMD }}
 
             - name: Make bin dir
               run: mkdir ./bin
