@@ -14,13 +14,19 @@ concurrency:
 env:
     # Enable self-hosted runners for the sigp repo only.
     SELF_HOSTED_RUNNERS: ${{ github.repository == 'sigp/anchor' }}
+    RUST_VERSION: 'abc'
 
 jobs:
+    # Extract the rust-version from the Cargo.toml file.
     # Extract the VERSION which is either `latest` or `vX.Y.Z`, and the VERSION_SUFFIX
     # which is either empty or `-unstable`.
     extract-version:
         runs-on: ubuntu-22.04
         steps:
+            - name: Get rust-version 
+              id: get-rust-version 
+              run: RUST_VERSION=$(./.github/scripts/toml_reader.sh ./anchor/Cargo.toml package rust-version)
+
             - name: Extract version (if stable)
               if: github.event.ref == 'refs/heads/stable'
               run: |
@@ -96,3 +102,5 @@ jobs:
                 push: true
                 tags: |
                   hughestech/${{ matrix.binary }}:${{ env.VERSION }}${{ env.VERSION_SUFFIX }}
+                build-args: |
+                  RUST_VERSION=${{ env.RUST_VERSION }}
