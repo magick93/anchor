@@ -1,4 +1,5 @@
-FROM rust:1.80.0-bullseye AS builder
+ARG RUST_VERSION=1.80.0
+FROM rust:${RUST_VERSION}-bullseye AS builder
 RUN apt-get update && apt-get -y upgrade && apt-get install -y cmake libclang-dev
 COPY . anchor
 ARG FEATURES
