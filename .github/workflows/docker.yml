@@ -100,13 +100,13 @@ jobs:
               if: env.SELF_HOSTED_RUNNERS == 'false'
               uses: docker/setup-buildx-action@v3
 
-            - name: Build and push
+            - name: Build and push (Anchor)
               uses: docker/build-push-action@v5
               with:
                 file: ./anchor/Dockerfile
                 context: .
                 push: true
                 tags: |
-                  hughestech/${{ matrix.binary }}:${{ env.VERSION }}${{ env.VERSION_SUFFIX }}
+                  ${{ github.repository_owner}}/${{ matrix.binary }}:${{ env.VERSION }}${{ env.VERSION_SUFFIX }}
                 build-args: |
                   RUST_VERSION=${{ env.RUST_VERSION }}
