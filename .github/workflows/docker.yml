@@ -25,7 +25,7 @@ jobs:
         steps:
             - name: Get rust-version 
               id: get-rust-version 
-              run: RUST_VERSION=$(./.github/scripts/toml_reader.sh ./anchor/Cargo.toml package rust-version)
+              run: RUST_VERSION=$(./scripts/toml_reader.sh ./anchor/Cargo.toml package rust-version)
 
             - name: Extract version (if stable)
               if: github.event.ref == 'refs/heads/stable'
