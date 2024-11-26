@@ -69,8 +69,8 @@ jobs:
               run: |
                 echo "Current working directory: $(pwd)"
                 ls -la $(pwd)
-                ls -la ./../.github/scripts/
-                RUST_VERSION=$(./../.github/scripts/toml_reader.sh Cargo.toml package rust-version)
+                ls -la ./.github/scripts/
+                RUST_VERSION=$(./.github/scripts/toml_reader.sh ./anchor/Cargo.toml package rust-version)
 
             - name: Retrieve Docker credentials from Vault
               uses: hashicorp/vault-action@v2
