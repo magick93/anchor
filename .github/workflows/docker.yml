@@ -23,13 +23,7 @@ jobs:
     extract-version:
         runs-on: ubuntu-22.04
         steps:
-            - name: Get rust-version 
-              id: get-rust-version 
-              run: |
-                echo "Current working directory: $(pwd)"
-                ls -la $(pwd)
-                ls -la ./../.github/scripts/
-                RUST_VERSION=$(./../.github/scripts/toml_reader.sh Cargo.toml package rust-version)
+            
 
             - name: Extract version (if stable)
               if: github.event.ref == 'refs/heads/stable'
@@ -69,6 +63,14 @@ jobs:
             - name: Update Rust
               if: env.SELF_HOSTED_RUNNERS == 'false'
               run: rustup update stable
+
+            - name: Get rust-version 
+              id: get-rust-version 
+              run: |
+                echo "Current working directory: $(pwd)"
+                ls -la $(pwd)
+                ls -la ./../.github/scripts/
+                RUST_VERSION=$(./../.github/scripts/toml_reader.sh Cargo.toml package rust-version)
 
             - name: Retrieve Docker credentials from Vault
               uses: hashicorp/vault-action@v2
