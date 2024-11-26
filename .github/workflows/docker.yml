@@ -65,7 +65,7 @@ jobs:
               with:
                 url: https://vault.sigp.io
                 method: github
-                githubToken: ${{ secrets.GITHUB_TOKEN }}
+                githubToken: ${{ secrets.GH_TOKEN }}
                 secrets: |
                     spesi_kv/data/gh_wf_testing DOCKER_USERNAME ;
                     spesi_kv/data/gh_wf_testing DOCKER_PASSWORD
