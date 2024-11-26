@@ -1,4 +1,4 @@
-FROM rust:1.78.0-bullseye AS builder
+FROM rust:1.80.0-bullseye AS builder
 RUN apt-get update && apt-get -y upgrade && apt-get install -y cmake libclang-dev
 COPY . anchor
 ARG FEATURES
@@ -15,4 +15,4 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y --no-install-reco
   ca-certificates \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-COPY --from=builder /usr/local/cargo/bin/lighthouse /usr/local/bin/lighthouse
+COPY --from=builder /usr/local/cargo/bin/anchor /usr/local/bin/anchor
