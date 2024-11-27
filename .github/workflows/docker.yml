@@ -79,8 +79,8 @@ jobs:
                 method: github
                 githubToken: ${{ secrets.GH_TOKEN }}
                 secrets: |
-                    spesi_kv/data/gh_wf_testing DOCKER_USERNAME ;
-                    spesi_kv/data/gh_wf_testing DOCKER_PASSWORD
+                    spesi_kv/dev/docker/anchor DOCKER_USERNAME ;
+                    spesi_kv/dev/docker/anchor DOCKER_PASSWORD
 
             - name: Dockerhub login
               run: |
