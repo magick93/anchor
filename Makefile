@@ -135,8 +135,9 @@ audit: install-audit audit-CI
 install-audit:
 	cargo install --force cargo-audit
 
+# TODO - remove when updated in LH(?)
 audit-CI:
-	cargo audit
+	cargo audit --ignore RUSTSEC-2024-0399
 
 # Runs `cargo vendor` to make sure dependencies can be vendored for packaging, reproducibility and archival purpose.
 vendor:
