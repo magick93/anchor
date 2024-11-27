@@ -17,32 +17,8 @@ env:
     RUST_VERSION: 'abc'
 
 jobs:
-    # Extract the rust-version from the Cargo.toml file.
-    # Extract the VERSION which is either `latest` or `vX.Y.Z`, and the VERSION_SUFFIX
-    # which is either empty or `-unstable`.
     extract-version:
-        runs-on: ubuntu-22.04
-        steps:
-            
-
-            - name: Extract version (if stable)
-              if: github.event.ref == 'refs/heads/stable'
-              run: |
-                    echo "VERSION=latest" >> $GITHUB_ENV
-                    echo "VERSION_SUFFIX=" >> $GITHUB_ENV
-            - name: Extract version (if unstable)
-              if: github.event.ref == 'refs/heads/unstable'
-              run: |
-                    echo "VERSION=latest" >> $GITHUB_ENV
-                    echo "VERSION_SUFFIX=-unstable" >> $GITHUB_ENV
-            - name: Extract version (if tagged release)
-              if: startsWith(github.event.ref, 'refs/tags')
-              run: |
-                    echo "VERSION=$(echo ${GITHUB_REF#refs/tags/})" >> $GITHUB_ENV
-                    echo "VERSION_SUFFIX=" >> $GITHUB_ENV
-        outputs:
-            VERSION: ${{ env.VERSION }}
-            VERSION_SUFFIX: ${{ env.VERSION_SUFFIX }}
+        uses: ./.github/workflows/extract-version.yml
 
     build-docker:
         name: build-docker-${{ matrix.binary }}
