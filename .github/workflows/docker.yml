@@ -136,7 +136,7 @@ jobs:
                 platforms: linux/${{ env.SHORT_ARCH }}
                 push: true
                 tags: |
-                  ${{ github.repository_owner}}/anchor:${{ env.VERSION }}
+                  ${{ github.repository_owner}}/anchor:${{ env.VERSION }}-${{ env.SHORT_ARCH }}${{ env.VERSION_SUFFIX }}
                 build-args: |
                   RUST_VERSION=${{ env.RUST_VERSION }}
                   TARGETPLATFORM=linux/${{ env.SHORT_ARCH }}
@@ -169,8 +169,8 @@ jobs:
               run: |
                   echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin
 
-    #         - name: Create and push multiarch manifests
-    #           run: |
-    #               docker buildx imagetools create -t ${{ github.repository_owner}}/anchor:${VERSION}${VERSION_SUFFIX} \
-    #                   ${{ github.repository_owner}}/anchor:${VERSION}-arm64${VERSION_SUFFIX} \
-    #                   ${{ github.repository_owner}}/anchor:${VERSION}-amd64${VERSION_SUFFIX}
+            - name: Create and push multiarch manifests
+              run: |
+                  docker buildx imagetools create -t ${{ github.repository_owner}}/anchor:${VERSION}${VERSION_SUFFIX} \
+                      ${{ github.repository_owner}}/anchor:${VERSION}-arm64${VERSION_SUFFIX} \
+                      ${{ github.repository_owner}}/anchor:${VERSION}-amd64${VERSION_SUFFIX}
