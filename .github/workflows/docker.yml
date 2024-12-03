@@ -96,16 +96,13 @@ jobs:
               if: startsWith(matrix.cpu_arch, 'x86_64')
               run: echo "SHORT_ARCH=amd64" >> $GITHUB_ENV
 
-            - name: Debug short arch
-              run: echo "SHORT_ARCH=${{ env.SHORT_ARCH }}"
 
             - name: Install Rust and Cargo
               run: |
                 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
                 source $HOME/.cargo/env
                 echo "PATH=$HOME/.cargo/bin:$PATH" >> $GITHUB_ENV
-                echo "rustup toolchain list is: $(rustup toolchain list)"
-                cargo --version
+
                 
             - name: cargo install cross
               run: |
@@ -133,7 +130,7 @@ jobs:
                 method: github
                 githubToken: ${{ secrets.GH_TOKEN }}
                 secrets: |
-                    spesi_kv/data/dev/docker/anchor DOCKER_USERNAME ;
+                    spesi_kv/data/dev/docker/anchor DOCKER_USERNAME
                     spesi_kv/data/dev/docker/anchor DOCKER_PASSWORD
 
             - name: Dockerhub login
@@ -144,12 +141,10 @@ jobs:
               run: |
                 cargo install cross
                 env CROSS_PROFILE=${{ matrix.profile }} make build-${{ matrix.cpu_arch }}
-                echo "### matrix.cpu_arch is ${{ matrix.cpu_arch }}"
-                echo "### matrix.profile is ${{ matrix.profile }}"
+
 
             - name: Set `make` command for anchor
               run: |
-                  echo "### cpu_arch is ${{ matrix.cpu_arch }}"
                   echo "MAKE_CMD=build-${{ matrix.cpu_arch }}" >> $GITHUB_ENV                
 
             - name: Make bin dir
