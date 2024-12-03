@@ -83,10 +83,6 @@ jobs:
             VERSION: ${{ needs.extract-version.outputs.VERSION }}
             VERSION_SUFFIX: ${{ needs.extract-version.outputs.VERSION_SUFFIX }}
         steps:
-            - name: Debug extract-version output
-              run: |
-                echo "[docker.yml] VERSION: ${{ needs.extract-version.outputs.VERSION }}"
-                echo "[docker.yml] VERSION_SUFFIX: ${{ needs.extract-version.outputs.VERSION_SUFFIX }}"
             
             - name: Map aarch64 to arm64 short arch
               if: startsWith(matrix.cpu_arch, 'aarch64')
