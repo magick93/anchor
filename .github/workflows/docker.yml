@@ -83,10 +83,6 @@ jobs:
             VERSION: ${{ needs.extract-version.outputs.VERSION }}
             VERSION_SUFFIX: ${{ needs.extract-version.outputs.VERSION_SUFFIX }}
         steps:
-            - name: Debug extract-version output
-              run: |
-                echo "[docker.yml] VERSION: ${{ needs.extract-version.outputs.VERSION }}"
-                echo "[docker.yml] VERSION_SUFFIX: ${{ needs.extract-version.outputs.VERSION_SUFFIX }}"
             
             - name: Map aarch64 to arm64 short arch
               if: startsWith(matrix.cpu_arch, 'aarch64')
@@ -96,16 +92,13 @@ jobs:
               if: startsWith(matrix.cpu_arch, 'x86_64')
               run: echo "SHORT_ARCH=amd64" >> $GITHUB_ENV
 
-            - name: Debug short arch
-              run: echo "SHORT_ARCH=${{ env.SHORT_ARCH }}"
 
             - name: Install Rust and Cargo
               run: |
                 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
                 source $HOME/.cargo/env
                 echo "PATH=$HOME/.cargo/bin:$PATH" >> $GITHUB_ENV
-                echo "rustup toolchain list is: $(rustup toolchain list)"
-                cargo --version
+
                 
             - name: cargo install cross
               run: |
@@ -133,7 +126,7 @@ jobs:
                 method: github
                 githubToken: ${{ secrets.GH_TOKEN }}
                 secrets: |
-                    spesi_kv/data/dev/docker/anchor DOCKER_USERNAME ;
+                    spesi_kv/data/dev/docker/anchor DOCKER_USERNAME
                     spesi_kv/data/dev/docker/anchor DOCKER_PASSWORD
 
             - name: Dockerhub login
@@ -144,12 +137,10 @@ jobs:
               run: |
                 cargo install cross
                 env CROSS_PROFILE=${{ matrix.profile }} make build-${{ matrix.cpu_arch }}
-                echo "### matrix.cpu_arch is ${{ matrix.cpu_arch }}"
-                echo "### matrix.profile is ${{ matrix.profile }}"
+
 
             - name: Set `make` command for anchor
               run: |
-                  echo "### cpu_arch is ${{ matrix.cpu_arch }}"
                   echo "MAKE_CMD=build-${{ matrix.cpu_arch }}" >> $GITHUB_ENV                
 
             - name: Make bin dir
@@ -184,31 +175,3 @@ jobs:
                   RUST_VERSION=${{ env.RUST_VERSION }}
                   TARGETPLATFORM=linux/${{ env.SHORT_ARCH }}
                   GIT_COMMIT_HASH=${{ github.sha }}
-
-    build-docker-multiarch:
-        name: build-docker-anchor-multiarch
-        runs-on: ubuntu-22.04
-        strategy:
-            matrix:
-                binary: [anchor]
-        needs: [build-docker-single-arch, extract-version]
-        env:
-            VERSION: ${{ needs.extract-version.outputs.VERSION }}
-            VERSION_SUFFIX: ${{ needs.extract-version.outputs.VERSION_SUFFIX }}
-        steps:
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
-
-            - name: Retrieve Docker credentials from Vault
-              uses: hashicorp/vault-action@v2
-              with:
-                url: https://vault.sigp.io
-                method: github
-                githubToken: ${{ secrets.GH_TOKEN }}
-                secrets: |
-                    spesi_kv/data/dev/docker/anchor DOCKER_USERNAME ;
-                    spesi_kv/data/dev/docker/anchor DOCKER_PASSWORD
-
-            - name: Dockerhub login
-              run: |
-                  echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin
