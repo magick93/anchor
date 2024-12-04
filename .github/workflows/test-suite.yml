@@ -6,6 +6,7 @@ on:
       - stable
       - 'pr/*'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   merge_group:
 
 concurrency:
