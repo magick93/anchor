@@ -26,6 +26,7 @@ jobs:
         uses: ./.github/workflows/extract-version.yml
 
     # Critical test jobs from test-suite.yml
+    # TODO - depend on test-suite.yml
     release-tests:
         name: release-tests
         runs-on: ubuntu-latest
@@ -69,7 +70,7 @@ jobs:
         - name: Lint code for quality and style with Clippy
           run: make lint
 
-    build-docker-single-arch:
+    build-docker-multi-arch:
         name: build-docker-anchor-${{ matrix.cpu_arch }}
         runs-on: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "linux", "release"]') || 'ubuntu-22.04'  }}
         strategy:
