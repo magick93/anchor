@@ -32,10 +32,10 @@ jobs:
                        
                 include:
                     -   arch: aarch64-unknown-linux-gnu
-                        runner: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "linux", "release", "large"]') || 'ubuntu-latest'  }}
+                        runner: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "linux", "release", "large"]') || 'ubuntu-22.04'  }}
                         profile: maxperf
                     -   arch: x86_64-unknown-linux-gnu
-                        runner: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "linux", "release", "large"]') || 'ubuntu-latest'  }}
+                        runner: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "linux", "release", "large"]') || 'ubuntu-22.04'  }}
                         profile: maxperf
                     -   arch: x86_64-apple-darwin
                         runner: macos-13
@@ -151,7 +151,7 @@ jobs:
     draft-release:
         name:   Draft Release
         needs:  [build, extract-version]
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-22.04
         env:
             VERSION:  ${{ needs.extract-version.outputs.VERSION }}
         steps:
