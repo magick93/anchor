@@ -6,6 +6,7 @@ on:
       - stable
       - 'pr/*'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   merge_group:
 
 concurrency:
@@ -27,6 +28,7 @@ env:
   # Enable portable to prevent issues with caching `blst` for the wrong CPU type
   # TEST_FEATURES: portable
 jobs:
+
   check-labels:
     runs-on: ubuntu-latest
     name: Check for 'skip-ci' label
