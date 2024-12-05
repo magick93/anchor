@@ -1,8 +1,6 @@
 name: Docker build and push
 
 on:
-  workflow_run:
-    workflows: ["test-suite"]
   push:
     branches:
       - stable
@@ -16,7 +14,7 @@ concurrency:
 env:
     # Enable self-hosted runners for the sigp repo only.
     SELF_HOSTED_RUNNERS: ${{ github.repository == 'sigp/anchor' }}
-    RUST_VERSION: 'abc'
+    RUST_VERSION: '1.80.0'
     SHORT_ARCH: 'amd64'
     # Deny warnings in CI
     RUSTFLAGS: "-D warnings -C debuginfo=0"
@@ -37,7 +35,7 @@ jobs:
                 include:
                     - profile: maxperf
 
-        needs: [extract-version, release-tests, debug-tests, code-quality]
+        needs: [extract-version]
         env:
             VERSION: ${{ needs.extract-version.outputs.VERSION }}
             VERSION_SUFFIX: ${{ needs.extract-version.outputs.VERSION_SUFFIX }}
@@ -133,4 +131,4 @@ jobs:
                 build-args: |
                   RUST_VERSION=${{ env.RUST_VERSION }}
                   TARGETPLATFORM=linux/${{ env.SHORT_ARCH }}
-                  GIT_COMMIT_HASH=${{ github.sha }}
+                  
