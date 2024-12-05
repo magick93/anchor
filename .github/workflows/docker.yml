@@ -27,51 +27,7 @@ jobs:
     extract-version:
         uses: ./.github/workflows/extract-version.yml
 
-    # Critical test jobs from test-suite.yml
-    # TODO - depend on test-suite.yml
-    release-tests:
-        name: release-tests
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-        - name: Get latest version of stable Rust
-          uses: moonrepo/setup-rust@v1
-          with:
-              channel: stable
-              cache-target: release
-              bins: cargo-nextest
-        - name: Run tests in release
-          run: make nextest-release
-
-    debug-tests:
-        name: debug-tests
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-        - name: Get latest version of stable Rust
-          uses: moonrepo/setup-rust@v1
-          with:
-              channel: stable
-              bins: cargo-nextest
-        - name: Run tests in debug
-          run: make nextest-debug
-
-    code-quality:
-        name: code-quality
-        runs-on: ubuntu-latest
-        steps:
-        - uses: actions/checkout@v4
-        - name: Get latest version of stable Rust
-          uses: moonrepo/setup-rust@v1
-          with:
-              channel: stable
-              cache-target: release
-              components: rustfmt,clippy
-        - name: Check formatting with cargo fmt
-          run: make cargo-fmt
-        - name: Lint code for quality and style with Clippy
-          run: make lint
-
+    
     build-docker-multi-arch:
         name: build-docker-anchor-${{ matrix.cpu_arch }}
         runs-on: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "linux", "release"]') || 'ubuntu-22.04'  }}
