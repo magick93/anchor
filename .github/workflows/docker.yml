@@ -1,11 +1,13 @@
 name: Docker build and push
 
 on:
-    push:
-        branches:
-            - stable
-        tags:
-            - v*
+  workflow_run:
+    workflows: ["test-suite"]
+  push:
+    branches:
+      - stable
+    tags:
+      - v*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
