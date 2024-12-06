@@ -40,10 +40,9 @@ jobs:
                     -   arch: x86_64-apple-darwin
                         runner: macos-13
                         profile: maxperf
-                    # disabled due to https://github.com/magick93/anchor/issues/51
-                    # -   arch: x86_64-windows
-                    #     runner: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "windows", "release"]') || 'windows-2019'  }}
-                    #     profile: maxperf
+                    -   arch: x86_64-windows
+                        runner: ${{ github.repository == 'sigp/anchor' && fromJson('["self-hosted", "windows", "release"]') || 'windows-2019'  }}
+                        profile: maxperf
 
         runs-on:    ${{ matrix.runner }}
         needs: extract-version
