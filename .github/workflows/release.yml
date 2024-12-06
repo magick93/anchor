@@ -28,7 +28,8 @@ jobs:
             matrix:
                 arch: [aarch64-unknown-linux-gnu,
                        x86_64-unknown-linux-gnu,
-                       x86_64-apple-darwin] # x86_64-windows removed due to https://github.com/magick93/anchor/issues/51
+                       x86_64-apple-darwin,
+                       x86_64-windows]
                        
                 include:
                     -   arch: aarch64-unknown-linux-gnu
