@@ -151,8 +151,11 @@ impl Environment {
             .signal_rx
             .take()
             .ok_or("Inner shutdown already received")?;
-        
-        match self.runtime().block_on(environment_windows::handle_shutdown_signals(signal_rx)) {
+
+        match self
+            .runtime()
+            .block_on(environment_windows::handle_shutdown_signals(signal_rx))
+        {
             Ok(reason) => {
                 info!(reason = reason.message(), "Internal shutdown received");
                 Ok(reason)

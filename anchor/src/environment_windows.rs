@@ -34,7 +34,9 @@ pub(crate) async fn handle_shutdown_signals(
     match register_handlers.await {
         future::Either::Left((Ok(reason), _)) => Ok(reason),
         future::Either::Left((Err(e), _)) => Err(e.into()),
-        future::Either::Right(((res, _, _), _)) => res.ok_or_else(|| "Handler channel closed".to_string()),
+        future::Either::Right(((res, _, _), _)) => {
+            res.ok_or_else(|| "Handler channel closed".to_string())
+        }
     }
 }
 
