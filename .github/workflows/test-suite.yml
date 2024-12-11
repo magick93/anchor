@@ -128,8 +128,6 @@ jobs:
       run: make lint
     - name: Certify Cargo.lock freshness
       run: git diff --exit-code Cargo.lock
-    - name: cargo update
-      run: cargo update
     - name: Run cargo audit
       run: make audit-CI
       # Dependency conflicts are causing pain here. Once SLOG is removed from lighthouse this should
