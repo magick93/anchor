@@ -37,7 +37,7 @@ clap = { version = "4.5.15", features = ["derive", "wrap_help"]}
 discv5 = "0.8.0"
 dirs = "5.0.1"
 either = "1.13.0"
-futures = "0.3.31"
+futures = "0.3.30"
 tower-http = {version = "0.6", features = ["cors"] }
 hyper = "1.4"
 num_cpus = "1"
