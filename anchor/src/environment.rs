@@ -9,7 +9,6 @@ use tokio::runtime::{Builder as RuntimeBuilder, Runtime};
 use tracing::{error, info, warn};
 use tracing_subscriber::EnvFilter;
 
-#[cfg(target_family = "unix")]
 use {
     futures::Future,
     std::{pin::Pin, task::Context, task::Poll},
