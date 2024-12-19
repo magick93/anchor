@@ -19,10 +19,6 @@ use {
 #[path = "environment_windows.rs"]
 mod environment_windows;
 
-#[cfg(target_family = "windows")]
-#[path = "environment_windows.rs"]
-mod environment_windows;
-
 /// The maximum time in seconds the client will wait for all internal tasks to shutdown.
 const MAXIMUM_SHUTDOWN_TIME: u64 = 15;
 
