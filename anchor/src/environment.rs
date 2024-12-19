@@ -9,12 +9,15 @@ use tokio::runtime::{Builder as RuntimeBuilder, Runtime};
 use tracing::{error, info, warn};
 use tracing_subscriber::EnvFilter;
 
-#[cfg(target_family = "unix")]
 use {
     futures::Future,
     std::{pin::Pin, task::Context, task::Poll},
     tokio::signal::unix::{signal, Signal, SignalKind},
 };
+
+#[cfg(target_family = "windows")]
+#[path = "environment_windows.rs"]
+mod environment_windows;
 
 #[cfg(target_family = "windows")]
 #[path = "environment_windows.rs"]
