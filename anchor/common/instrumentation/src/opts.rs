@@ -1,11 +1,9 @@
 use syn::{
     parse::{Parse, ParseStream, Result},
-    Token, Lit, Expr, ExprLit, LitStr, 
-    punctuated::Punctuated, 
-    token::Comma,
+    Token, Lit, Expr, ExprLit, 
+    punctuated::Punctuated,
     Meta,
 };
-use proc_macro2::Span;
 
 /// Configuration options for the instrument macro
 #[derive(Debug, Default)]
