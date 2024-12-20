@@ -1,0 +1,21 @@
+[package]
+name = "instrumentation"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote = "1.0.37"
+syn = { version = "2.0.90", features = ["full"] }
+proc-macro2 = "1.0"
+
+# OpenTelemetry dependencies
+opentelemetry = { version = "0.27.1", features = ["metrics"] }
+opentelemetry_sdk = { version = "0.27.1", features = ["metrics"] }
+opentelemetry-stdout = "0.27"
+
+# For async support
+tokio = { version = "1", features = ["full"] }
+darling = "0.20.10"
