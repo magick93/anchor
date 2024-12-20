@@ -5,6 +5,7 @@ members = [
     "anchor/client",
     "anchor/common/ssv_types",
     "anchor/common/version",
+    "anchor/common/instrumentation",
     "anchor/http_api",
     "anchor/http_metrics",
     "anchor/network",
@@ -22,6 +23,7 @@ qbft = { path = "anchor/qbft" }
 http_api = { path = "anchor/http_api" }
 http_metrics = { path = "anchor/http_metrics" }
 network = { path = "anchor/network" }
+instrumentation = { path = "anchor/common/instrumentation" }
 version = { path = "anchor/common/version" }
 processor = { path = "anchor/processor" }
 ssv_types = { path = "anchor/common/ssv_types" }
