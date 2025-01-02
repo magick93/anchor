@@ -26,7 +26,7 @@ pub static LONG_VERSION: LazyLock<String> = LazyLock::new(|| {
         SHORT_VERSION.as_str(),
         have_sha_extensions(),
         allocator_name(),
-        build_profile_name(),
+        build::BUILD_RUST_CHANNEL,
         format!("\x1b]8;;https://github.com/sigp/anchor/commit/{}\x1b\\{}\x1b]8;;\x1b\\", build::COMMIT_HASH, build::SHORT_COMMIT),
         shadow_rs::git_clean(),
         build::PKG_VERSION
@@ -43,15 +43,7 @@ fn allocator_name() -> &'static str {
     }
 }
 
-fn build_profile_name() -> &'static str {
-    // Nice hack from https://stackoverflow.com/questions/73595435/how-to-get-profile-from-cargo-toml-in-build-rs-or-at-runtime
-    // The profile name is always the 3rd last part of the path (with 1 based indexing).
-    // e.g. /code/core/target/cli/build/my-build-info-9f91ba6f99d7a061/out
-    env!("OUT_DIR")
-        .split(std::path::MAIN_SEPARATOR)
-        .nth_back(3)
-        .unwrap_or("unknown")
-}
+
 
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, Serialize, Display, ValueEnum)]
 pub enum DebugLevel {
