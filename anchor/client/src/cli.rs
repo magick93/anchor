@@ -27,7 +27,7 @@ pub static LONG_VERSION: LazyLock<String> = LazyLock::new(|| {
         have_sha_extensions(),
         allocator_name(),
         build_profile_name(),
-        build::SHORT_COMMIT,
+        format!("\x1b]8;;https://github.com/sigp/anchor/commit/{}\x1b\\{}\x1b]8;;\x1b\\", build::COMMIT_HASH, build::SHORT_COMMIT),
         shadow_rs::git_clean(),
         build::PKG_VERSION
     )
