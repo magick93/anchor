@@ -3,6 +3,7 @@ name = "client"
 version = "0.1.0"
 authors = ["Sigma Prime <contact@sigmaprime.io"]
 edition = { workspace = true }
+build = "build.rs"
 
 [lib]
 name = "client"
@@ -21,9 +22,13 @@ parking_lot = { workspace = true }
 processor = { workspace = true }
 sensitive_url = { workspace = true }
 serde = { workspace = true }
+shadow-rs = "0.37.0"
 strum = { workspace = true }
 task_executor = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }
 unused_port = { workspace = true }
 version = { workspace = true }
+
+[build-dependencies]
+shadow-rs = "0.37.0"
