@@ -9,6 +9,8 @@ use std::net::IpAddr;
 use std::path::PathBuf;
 use std::sync::LazyLock;
 use version::VERSION;
+use shadow_rs::shadow;
+shadow!(build);
 
 pub static SHORT_VERSION: LazyLock<String> = LazyLock::new(|| VERSION.replace("Anchor/", ""));
 pub static LONG_VERSION: LazyLock<String> = LazyLock::new(|| {
@@ -16,11 +18,18 @@ pub static LONG_VERSION: LazyLock<String> = LazyLock::new(|| {
         "{}\n\
          SHA256 hardware acceleration: {}\n\
          Allocator: {}\n\
-         Profile: {}",
+         Profile: {}\n\
+         Build: {}\n\
+         Git clean: {}\n\
+         Version: {}",
+         
         SHORT_VERSION.as_str(),
         have_sha_extensions(),
         allocator_name(),
         build_profile_name(),
+        build::SHORT_COMMIT,
+        shadow_rs::git_clean(),
+        build::PKG_VERSION
     )
 });
 
