@@ -6,6 +6,8 @@ members = [
     "anchor/common/qbft",
     "anchor/common/ssv_types",
     "anchor/common/version",
+    "anchor/common/version",
+    "anchor/database",
     "anchor/http_api",
     "anchor/http_metrics",
     "anchor/network",
@@ -21,6 +23,7 @@ client = { path = "anchor/client" }
 qbft = { path = "anchor/common/qbft" }
 http_api = { path = "anchor/http_api" }
 http_metrics = { path = "anchor/http_metrics" }
+database = { path = "anchor/database" }
 network = { path = "anchor/network" }
 version = { path = "anchor/common/version" }
 processor = { path = "anchor/processor" }
@@ -57,7 +60,9 @@ tokio = { version = "1.39.2", features = [
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["fmt", "env-filter"] }
 base64 = "0.22.1"
+rusqlite = "0.28.0"
 openssl = "0.10.68"
+dashmap = "6.1.0"
 
 [profile.maxperf]
 inherits = "release"
