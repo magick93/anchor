@@ -31,6 +31,7 @@ pub enum Network {
     Testnet,
 }
 
+// uses in query params
 #[derive(Debug, Deserialize)]
 pub struct NetworkParams {
     network: Network,
