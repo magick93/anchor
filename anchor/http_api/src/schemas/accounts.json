@@ -1,0 +1,97 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Accounts",
+    "definitions": {
+        "Accounts": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "filter": {
+                    "$ref": "#/definitions/Filter"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Datum"
+                    }
+                }
+            },
+            "required": [
+                "data",
+                "filter",
+                "type"
+            ],
+            "title": "Accounts"
+        },
+        "Datum": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "ownerAddress": {
+                    "type": "string"
+                },
+                "recipientAddress": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "network": {
+                    "$ref": "#/definitions/Network"
+                },
+                "version": {
+                    "$ref": "#/definitions/Version"
+                }
+            },
+            "required": [
+                "id",
+                "network",
+                "ownerAddress",
+                "recipientAddress",
+                "version"
+            ],
+            "title": "Datum"
+        },
+        "Filter": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "perPage": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "page",
+                "perPage"
+            ],
+            "title": "Filter"
+        },
+        "Network": {
+            "type": "string",
+            "enum": [
+                "mainnet"
+            ],
+            "title": "Network"
+        },
+        "Version": {
+            "type": "string",
+            "enum": [
+                "v4"
+            ],
+            "title": "Version"
+        }
+    }
+}

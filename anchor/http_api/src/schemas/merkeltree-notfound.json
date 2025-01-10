@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/MerkeltreeNotFound",
+    "definitions": {
+        "MerkeltreeNotFound": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/Error"
+                }
+            },
+            "required": [
+                "error"
+            ],
+            "title": "MerkeltreeNotFound"
+        },
+        "Error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "$ref": "#/definitions/Message"
+                }
+            },
+            "required": [
+                "code",
+                "message"
+            ],
+            "title": "Error"
+        },
+        "Message": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ],
+            "title": "Message"
+        }
+    }
+}

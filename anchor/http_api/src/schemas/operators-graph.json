@@ -1,0 +1,277 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/OperatorsGraph",
+    "definitions": {
+        "OperatorsGraph": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "operators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Operator"
+                    }
+                },
+                "pagination": {
+                    "$ref": "#/definitions/Pagination"
+                }
+            },
+            "required": [
+                "operators",
+                "pagination"
+            ],
+            "title": "OperatorsGraph"
+        },
+        "Operator": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "id_str": {
+                    "type": "string",
+                    "format": "integer"
+                },
+                "declared_fee": {
+                    "type": "string",
+                    "format": "integer"
+                },
+                "previous_fee": {
+                    "type": "string"
+                },
+                "fee": {
+                    "type": "string",
+                    "format": "integer"
+                },
+                "public_key": {
+                    "type": "string"
+                },
+                "owner_address": {
+                    "type": "string"
+                },
+                "address_whitelist": {
+                    "$ref": "#/definitions/AddressWhitelist"
+                },
+                "is_private": {
+                    "type": "boolean"
+                },
+                "whitelisting_contract": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "setup_provider": {
+                    "type": "string"
+                },
+                "eth1_node_client": {
+                    "$ref": "#/definitions/Eth1NodeClient"
+                },
+                "eth2_node_client": {
+                    "$ref": "#/definitions/Eth2NodeClient"
+                },
+                "mev_relays": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "website_url": {
+                    "type": "string",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "twitter_url": {
+                    "type": "string",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "linkedin_url": {
+                    "type": "string",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "dkg_address": {
+                    "type": "string",
+                    "qt-uri-protocols": [
+                        "https"
+                    ]
+                },
+                "logo": {
+                    "type": "string",
+                    "qt-uri-protocols": [
+                        "https"
+                    ],
+                    "qt-uri-extensions": [
+                        ".jpeg",
+                        ".png"
+                    ]
+                },
+                "type": {
+                    "$ref": "#/definitions/Type"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "performance": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "number"
+                    }
+                },
+                "is_valid": {
+                    "type": "boolean"
+                },
+                "is_deleted": {
+                    "type": "boolean"
+                },
+                "is_active": {
+                    "type": "integer"
+                },
+                "status": {
+                    "$ref": "#/definitions/Status"
+                },
+                "validators_count": {
+                    "type": "integer"
+                },
+                "version": {
+                    "$ref": "#/definitions/Version"
+                },
+                "network": {
+                    "$ref": "#/definitions/Network"
+                },
+                "whitelist_addresses": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [
+                "address_whitelist",
+                "declared_fee",
+                "description",
+                "dkg_address",
+                "eth1_node_client",
+                "eth2_node_client",
+                "fee",
+                "id",
+                "id_str",
+                "is_active",
+                "is_deleted",
+                "is_private",
+                "is_valid",
+                "linkedin_url",
+                "location",
+                "logo",
+                "mev_relays",
+                "name",
+                "network",
+                "owner_address",
+                "performance",
+                "previous_fee",
+                "public_key",
+                "setup_provider",
+                "status",
+                "twitter_url",
+                "type",
+                "validators_count",
+                "version",
+                "website_url",
+                "whitelisting_contract"
+            ],
+            "title": "Operator"
+        },
+        "Pagination": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "total": {
+                    "type": "integer"
+                },
+                "pages": {
+                    "type": "integer"
+                },
+                "per_page": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "current_first": {
+                    "type": "integer"
+                },
+                "current_last": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "current_first",
+                "current_last",
+                "page",
+                "pages",
+                "per_page",
+                "total"
+            ],
+            "title": "Pagination"
+        },
+        "AddressWhitelist": {
+            "type": "string",
+            "enum": [
+                "",
+                "0x1DB131C9061e84B74b1abfc2593FDb77F330262E"
+            ],
+            "title": "AddressWhitelist"
+        },
+        "Eth1NodeClient": {
+            "type": "string",
+            "enum": [
+                "",
+                "Nethermind",
+                "Besu"
+            ],
+            "title": "Eth1NodeClient"
+        },
+        "Eth2NodeClient": {
+            "type": "string",
+            "enum": [
+                "",
+                "Lighthouse",
+                "Nimbus"
+            ],
+            "title": "Eth2NodeClient"
+        },
+        "Network": {
+            "type": "string",
+            "enum": [
+                "mainnet"
+            ],
+            "title": "Network"
+        },
+        "Status": {
+            "type": "string",
+            "enum": [
+                "Active"
+            ],
+            "title": "Status"
+        },
+        "Type": {
+            "type": "string",
+            "enum": [
+                "operator"
+            ],
+            "title": "Type"
+        },
+        "Version": {
+            "type": "string",
+            "enum": [
+                "v4"
+            ],
+            "title": "Version"
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/HealthCheck",
+    "definitions": {
+        "HealthCheck": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "operators": {
+                    "type": "integer"
+                },
+                "validators": {
+                    "type": "integer"
+                },
+                "operators_graph": {
+                    "type": "integer"
+                },
+                "operator": {
+                    "type": "integer"
+                },
+                "validators_in_operator": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "operator",
+                "operators",
+                "operators_graph",
+                "validators",
+                "validators_in_operator"
+            ],
+            "title": "HealthCheck"
+        }
+    }
+}

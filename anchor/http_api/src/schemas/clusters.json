@@ -1,0 +1,121 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Clusters",
+    "definitions": {
+        "Clusters": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "filter": {
+                    "$ref": "#/definitions/Filter"
+                },
+                "clusters": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Cluster"
+                    }
+                }
+            },
+            "required": [
+                "clusters",
+                "filter",
+                "type"
+            ],
+            "title": "Clusters"
+        },
+        "Cluster": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "clusterId": {
+                    "type": "string"
+                },
+                "network": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "ownerAddress": {
+                    "type": "string"
+                },
+                "validatorCount": {
+                    "type": "integer"
+                },
+                "networkFeeIndex": {
+                    "type": "string"
+                },
+                "index": {
+                    "type": "string"
+                },
+                "balance": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                },
+                "isLiquidated": {
+                    "type": "boolean"
+                },
+                "operators": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "blockNumber": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            },
+            "required": [
+                "active",
+                "balance",
+                "blockNumber",
+                "clusterId",
+                "createdAt",
+                "id",
+                "index",
+                "isLiquidated",
+                "network",
+                "networkFeeIndex",
+                "operators",
+                "ownerAddress",
+                "updatedAt",
+                "validatorCount",
+                "version"
+            ],
+            "title": "Cluster"
+        },
+        "Filter": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "from": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "from",
+                "limit"
+            ],
+            "title": "Filter"
+        }
+    }
+}

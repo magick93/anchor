@@ -1,0 +1,23 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/ClusterCount",
+    "definitions": {
+        "ClusterCount": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "data",
+                "type"
+            ],
+            "title": "ClusterCount"
+        }
+    }
+}

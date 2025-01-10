@@ -1,0 +1,2281 @@
+ {
+      "openapi": "3.0.0",
+      "paths": {
+        "/api/v4/{network}/accounts": {
+          "get": {
+            "operationId": "AccountV4Controller_list",
+            "summary": "List accounts with pagination",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 100",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "number"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Accounts found and returned in response"
+              },
+              "404": {
+                "description": "Requested page number does not exists"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Accounts",
+              "v4"
+            ]
+          }
+        },
+        "/api/v4/{network}/accounts/{ownerAddress}": {
+          "get": {
+            "operationId": "AccountV4Controller_byId",
+            "summary": "Get fee recipient by owner address",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ownerAddress",
+                "required": true,
+                "in": "path",
+                "description": "Owner address of account",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Account found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Accounts",
+              "v4"
+            ]
+          }
+        },
+        "/api/v4/{network}/accounts/counts/{ownerAddress}": {
+          "parameters": [
+            {
+              "name": "network",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Network name"
+            },
+            {
+              "name": "ownerAddress",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Owner address"
+            }
+          ],
+          "get": {
+            "summary": "Get operators and clusters count by owner address",
+            "tags": [
+              "Accounts"
+            ],
+            "responses": {
+              "200": {
+                "description": "Counts found and returned in response"
+              },
+              "400": {
+                "description": "Owner address has wrong format"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            }
+          }
+        },
+        "/api/v4/{network}/clusters/count": {
+          "get": {
+            "operationId": "ClusterV4Controller_count",
+            "summary": "Count clusters in network",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Clusters counted and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/clusters": {
+          "get": {
+            "operationId": "ClusterV4Controller_list",
+            "summary": "List clusters with pagination",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "from",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "limit",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "operatorDetails",
+                "required": false,
+                "in": "query",
+                "description": "Response with operators details",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Clusters found and returned in response"
+              },
+              "404": {
+                "description": "Requested page number does not exists"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/clusters/updates": {
+          "get": {
+            "operationId": "ClusterV4Controller_updates",
+            "summary": "Get clusters updates from specific block number",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "fromBlock",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Cluster updates found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/clusters/{id}": {
+          "get": {
+            "operationId": "ClusterV4Controller_byId",
+            "summary": "Get cluster by its primary ID or keccak256 hash",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "id",
+                "required": true,
+                "in": "path",
+                "description": "Cluster keccak256 hash ID or primary numeric ID",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "operatorDetails",
+                "required": false,
+                "in": "query",
+                "description": "Response with operator details",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Cluster found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/clusters/owner/{owner}/operators/{operators}": {
+          "get": {
+            "operationId": "ClusterV4Controller_byOwnerAndOperators",
+            "summary": "Get cluster by owner address and operators list",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "owner",
+                "required": true,
+                "in": "path",
+                "description": "Owner address",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "operators",
+                "required": true,
+                "in": "path",
+                "description": "Comma-separated operator IDs",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "operatorDetails",
+                "required": false,
+                "in": "query",
+                "description": "Response with operators details",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Cluster found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/clusters/owner/{owner}": {
+          "get": {
+            "operationId": "ClusterV4Controller_byOwner",
+            "summary": "Get clusters by owner address",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 100",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "ordering",
+                "required": false,
+                "in": "query",
+                "description": "Sort by one or few fields. <br><br>You can sort only by: &nbsp;&nbsp;<code>id</code>,&nbsp;&nbsp;<code>index</code>,&nbsp;&nbsp;<code>validator_count</code><br><br>Examples: <ol><li><code>id:asc,index:desc</code><br><br></li><li><code>validator_count:desc</code><br><br></li><li>without specifying sort order: <code>validator_count,id</code> - equals to: <code>validator_count:asc,id:asc</code><br><br></li></ol>",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "operatorDetails",
+                "required": false,
+                "in": "query",
+                "description": "Response with operators details",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "owner",
+                "required": true,
+                "in": "path",
+                "description": "Owner address",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Clusters found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/clusters/hash/{clusterHash}": {
+          "get": {
+            "operationId": "ClusterV4Controller_validators",
+            "summary": "Get cluster info (validators and operators) by cluster hash",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 100",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "clusterHash",
+                "required": true,
+                "in": "path",
+                "description": "Cluster hash",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Cluster info found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Clusters"
+            ]
+          }
+        },
+        "/api/v4/{network}/duties/{validator}": {
+          "get": {
+            "operationId": "DutiesV4Controller_duties",
+            "summary": "List of duties performed by validator",
+            "parameters": [
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 100",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "validator",
+                "required": true,
+                "in": "path",
+                "description": "Validator address",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Validator found and duties returned in response"
+              },
+              "400": {
+                "description": "Validator address has wrong format"
+              },
+              "404": {
+                "description": "Validator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Duties",
+              "v4",
+              "Duties"
+            ]
+          }
+        },
+        "/api/v4/{network}/events/{txHash}": {
+          "parameters": [
+            {
+              "name": "network",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Network name"
+            },
+            {
+              "name": "txHash",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Transaction hash"
+            }
+          ],
+          "get": {
+            "summary": "Get event by transaction hash",
+            "tags": [
+              "Events"
+            ],
+            "responses": {
+              "200": {
+                "description": "Event found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            }
+          }
+        },
+        "/api/v4/{network}/faucet": {
+          "get": {
+            "operationId": "FaucetController_getTransactions",
+            "summary": "Get transactions by owner address or without",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Faucet"
+            ]
+          },
+          "post": {
+            "operationId": "FaucetController_setTransaction",
+            "summary": "Create transaction by owner address",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "ownerAddress",
+                      "network",
+                      "version"
+                    ],
+                    "properties": {
+                      "owner_address": {
+                        "type": "string"
+                      },
+                      "networkId": {
+                        "type": "number"
+                      },
+                      "version": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "OK"
+              },
+              "400": {
+                "description": "One or more parameters are invalid"
+              },
+              "406": {
+                "description": "Reached max transactions per day or faucet depleted"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Faucet"
+            ]
+          }
+        },
+        "/api/v4/{network}/faucet/config": {
+          "get": {
+            "operationId": "FaucetController_getFaucetConfig",
+            "summary": "Get transactions config",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Faucet"
+            ]
+          }
+        },
+        "/api/finance/currency/convert/{symbol}/{quote}": {
+          "get": {
+            "operationId": "FinanceController_currencyConvert",
+            "summary": "Convert from a currency into a quote currency",
+            "parameters": [
+              {
+                "name": "symbol",
+                "required": true,
+                "in": "path",
+                "description": "Currency to convert from",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "quote",
+                "required": true,
+                "in": "path",
+                "description": "Currency to convert to",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Both currencies are valid and has been converted",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "quote": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Currency can not be found or is not valid",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "symbol": {
+                          "type": "string"
+                        },
+                        "quote": {
+                          "type": "string"
+                        },
+                        "error": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "429": {
+                "description": "Rate limit exceeded",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "properties": {
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Finance"
+            ]
+          }
+        },
+        "/api/v4/{network}/health": {
+          "get": {
+            "operationId": "HealthV4Controller_health",
+            "summary": "Health check",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Health check for all endpoints"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Health",
+              "v4"
+            ]
+          }
+        },
+        "/api/v4/{network}/incentivization/merkle-tree": {
+          "get": {
+            "operationId": "IncentivizationV4Controller_migrationOperatorsDistribution",
+            "summary": "Merkle tree for version and network",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Merkle tree found for this version and network"
+              }
+            },
+            "tags": [
+              "Incentivized",
+              "v4",
+              "Incentivized"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/graph": {
+          "get": {
+            "operationId": "OperatorsV4Controller_graph",
+            "summary": "List of operators and validators for search widget",
+            "parameters": [
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 10000",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 10000,
+                  "default": 1000,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "randomize",
+                "required": false,
+                "in": "query",
+                "description": "To use this parameter specify \"true\" as string value",
+                "schema": {
+                  "default": "",
+                  "enum": [
+                    "true",
+                    "false",
+                    ""
+                  ],
+                  "type": "string"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operators found and returned in response"
+              },
+              "404": {
+                "description": "Requested page number does not exists"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators",
+              "Graph"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/owned_by/{ownerAddress}": {
+          "get": {
+            "operationId": "OperatorsV4Controller_ownedBy",
+            "summary": "List of operators by owner address",
+            "parameters": [
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 100",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "ordering",
+                "required": false,
+                "in": "query",
+                "description": "Sort by one or few fields. <br><br>You can sort only by: &nbsp;&nbsp;<code>id</code>,&nbsp;&nbsp;<code>fee</code>,&nbsp;&nbsp;<code>public_key</code>,&nbsp;&nbsp;<code>owner_address</code>,&nbsp;&nbsp;<code>name</code>,&nbsp;&nbsp;<code>address</code>,&nbsp;&nbsp;<code>location</code>,&nbsp;&nbsp;<code>setup_provider</code>,&nbsp;&nbsp;<code>eth1_node_client</code>,&nbsp;&nbsp;<code>eth2_node_client</code>,&nbsp;&nbsp;<code>description</code>,&nbsp;&nbsp;<code>website_url</code>,&nbsp;&nbsp;<code>twitter_url</code>,&nbsp;&nbsp;<code>linkedin_url</code>,&nbsp;&nbsp;<code>validators_count</code>,&nbsp;&nbsp;<code>status</code>,&nbsp;&nbsp;<code>performance.30d</code>,&nbsp;&nbsp;<code>performance.24h</code>,&nbsp;&nbsp;<code>type</code><br><br>Examples: <ol><li><code>name:asc,address:desc</code><br><br></li><li><code>validators_count:desc</code><br><br></li><li>without specifying sort order: <code>validators_count,name:asc</code> - equals to: <code>validators_count:asc,name:asc</code><br><br></li></ol>",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ownerAddress",
+                "required": true,
+                "in": "path",
+                "description": "Owner address",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operators found and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/incentivized/{operator}": {
+          "get": {
+            "operationId": "OperatorsV4Controller_incentivized",
+            "summary": "Incentivized stats for operator",
+            "parameters": [
+              {
+                "name": "epochFrom",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "epochsPerRound",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "rounds",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 5,
+                  "default": 3,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "operator",
+                "required": true,
+                "in": "path",
+                "description": "Operator address or ID from the contract",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operator found and returned in response"
+              },
+              "400": {
+                "description": "Operator address has wrong format"
+              },
+              "404": {
+                "description": "Operator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/{operator}": {
+          "get": {
+            "operationId": "OperatorsV4Controller_getOperator",
+            "summary": "Single operator data",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "operator",
+                "required": true,
+                "in": "path",
+                "description": "Operator address or ID from the contract",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operator found and returned in response"
+              },
+              "400": {
+                "description": "Operator id/address has wrong format"
+              },
+              "404": {
+                "description": "Operator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/dkg_health_check": {
+          "post": {
+            "operationId": "OperatorsV4Controller_getDkgHealthCheck",
+            "summary": "Dkg address health check",
+            "parameters": [
+              {
+                "name": "network",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Network name"
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DkgHealthCheckDto"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "true if dkg endpoint is active, false else"
+              },
+              "201": {
+                "description": "true if dkg endpoint is active, false else"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/public_key/{public_key}": {
+          "get": {
+            "operationId": "OperatorsV4Controller_getByPublicKey",
+            "summary": "Get operator by public key",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "public_key",
+                "required": true,
+                "in": "path",
+                "description": "Operator by public key",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operator found and returned in response"
+              },
+              "400": {
+                "description": "Operator public key has wrong format"
+              },
+              "404": {
+                "description": "Operator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators": {
+          "get": {
+            "operationId": "OperatorsV4Controller_operators",
+            "summary": "List of operators",
+            "parameters": [
+              {
+                "name": "type",
+                "required": false,
+                "in": "query",
+                "description": "Case-sensitive filter by operator \"type\" in <code>full match</code> manner, comma-separated for multiple matching. <br><br>Example:<code>verified_operator</code>, <code>verified_operator,dapp_node</code>, ",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 5000",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 5000,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "ordering",
+                "required": false,
+                "in": "query",
+                "description": "Sort by one or few fields. <br><br>You can sort only by: &nbsp;&nbsp;<code>id</code>,&nbsp;&nbsp;<code>fee</code>,&nbsp;&nbsp;<code>public_key</code>,&nbsp;&nbsp;<code>owner_address</code>,&nbsp;&nbsp;<code>name</code>,&nbsp;&nbsp;<code>address</code>,&nbsp;&nbsp;<code>location</code>,&nbsp;&nbsp;<code>setup_provider</code>,&nbsp;&nbsp;<code>eth1_node_client</code>,&nbsp;&nbsp;<code>eth2_node_client</code>,&nbsp;&nbsp;<code>description</code>,&nbsp;&nbsp;<code>website_url</code>,&nbsp;&nbsp;<code>twitter_url</code>,&nbsp;&nbsp;<code>linkedin_url</code>,&nbsp;&nbsp;<code>validators_count</code>,&nbsp;&nbsp;<code>status</code>,&nbsp;&nbsp;<code>performance.30d</code>,&nbsp;&nbsp;<code>performance.24h</code>,&nbsp;&nbsp;<code>type</code><br><br>Examples: <ol><li><code>name:asc,address:desc</code><br><br></li><li><code>validators_count:desc</code><br><br></li><li>without specifying sort order: <code>validators_count,name:asc</code> - equals to: <code>validators_count:asc,name:asc</code><br><br></li></ol>",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "search",
+                "required": false,
+                "in": "query",
+                "description": "Full-text search for entries matching all fields in a case-insensitive way",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "has_dkg_address",
+                "required": false,
+                "in": "query",
+                "description": "Filter operators by whether they have a DKG address or not.",
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operators found and returned in response"
+              },
+              "404": {
+                "description": "Requested page number does not exists"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          },
+          "post": {
+            "operationId": "OperatorsV4Controller_getByIds",
+            "summary": "List operators by ids",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "ids"
+                    ],
+                    "properties": {
+                      "ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "OK"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/{operator}/metadata": {
+          "put": {
+            "operationId": "OperatorsV4Controller_updateMetadata",
+            "summary": "Update operator metadata",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "operator",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OperatorMetadataDto"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Operator found and his metadata was updated. Final operator returned in response"
+              },
+              "401": {
+                "description": "Owner address is not authorized to perform this action"
+              },
+              "404": {
+                "description": "Operator does not exist"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/nodes/{layer}": {
+          "get": {
+            "operationId": "OperatorsV4Controller_nodes",
+            "summary": "List of available Eth node clients",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "layer",
+                "required": true,
+                "in": "path",
+                "description": "Eth node layer",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "enum": [
+                    "1",
+                    "2"
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "List of available Eth node clients"
+              },
+              "400": {
+                "description": "Layer has wrong format or value"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/operators/locations": {
+          "get": {
+            "operationId": "OperatorsV4Controller_locations",
+            "summary": "List of available locations",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "List of available locations"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Operators"
+            ]
+          }
+        },
+        "/api/v4/{network}/search": {
+          "get": {
+            "operationId": "SearchV4Controller_search",
+            "summary": "Search operators and validators",
+            "parameters": [
+              {
+                "name": "search",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "searchFor",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "default": "both",
+                  "enum": [
+                    "operators",
+                    "validators",
+                    "both"
+                  ],
+                  "type": "string"
+                }
+              },
+              {
+                "name": "operatorsLimit",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 0,
+                  "default": 5,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "validatorsLimit",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 0,
+                  "default": 5,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operators or validators found and returned in response"
+              },
+              "400": {
+                "description": "Search parameters provided with incorrect values"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Search",
+              "v4"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/countActiveValidators": {
+          "parameters": [
+            {
+              "name": "network",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Network name"
+            }
+          ],
+          "get": {
+            "summary": "Count active validators in network",
+            "tags": [
+              "Validators"
+            ],
+            "responses": {
+              "200": {
+                "description": "Validators counted and returned in response"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            }
+          }
+        },
+        "/api/v4/{network}/validators/owned_by/{ownerAddress}/cost": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_cost",
+            "summary": "Cost of all validators depending on in which operators they are.",
+            "parameters": [
+              {
+                "name": "ownerAddress",
+                "required": true,
+                "in": "path",
+                "description": "Owner address",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK"
+              },
+              "400": {
+                "description": "Account address has wrong format"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/in_operator/{operator}": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_inOperator",
+            "summary": "List of validators in operator",
+            "parameters": [
+              {
+                "name": "page",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 100",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 100,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "operator",
+                "required": true,
+                "in": "path",
+                "description": "Operator address or ID from the contract",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Validators found and returned in response"
+              },
+              "404": {
+                "description": "No such operator or operator does not have validators"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/incentivized/{validator}": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_incentivized",
+            "summary": "Incentivized stats",
+            "parameters": [
+              {
+                "name": "epochFrom",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "epochsPerRound",
+                "required": true,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "rounds",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 5,
+                  "default": 3,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "validator",
+                "required": true,
+                "in": "path",
+                "description": "Validator address",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Validator found and returned in response"
+              },
+              "400": {
+                "description": "Validator address has wrong format"
+              },
+              "404": {
+                "description": "Validator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/{validator}": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_validator",
+            "summary": "Single validator data",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "validator",
+                "required": true,
+                "in": "path",
+                "description": "Validator public_key",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Validator found and returned in response"
+              },
+              "400": {
+                "description": "Validator public_key has wrong format"
+              },
+              "404": {
+                "description": "Validator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/isRegisteredValidator/{validator}": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_validator",
+            "summary": "If validator is registered - single validator data, 404 otherwise",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "validator",
+                "required": true,
+                "in": "path",
+                "description": "Validator public_key",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Validator found and returned in response"
+              },
+              "400": {
+                "description": "Validator public_key has wrong format"
+              },
+              "404": {
+                "description": "Validator not found"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/registeredByPublicKeys": {
+          "parameters": [
+            {
+              "name": "network",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Network name"
+            }
+          ],
+          "post": {
+            "summary": "Return registered public keys",
+            "tags": [
+              "Validators"
+            ],
+            "responses": {
+              "200": {
+                "description": "Validators found and returned in response"
+              },
+              "400": {
+                "description": "Public key has wrong format"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "requestBody": {
+              "description": "Public keys",
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "publicKeys": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "An array of public keys"
+                      }
+                    },
+                    "required": [
+                      "publicKeys"
+                    ]
+                  }
+                }
+              },
+              "components": {
+                "schemas": {
+                  "RegisteredByPublicKeysDto": {
+                    "type": "object",
+                    "properties": {
+                      "publicKeys": {
+                        "type": "string[]"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/api/v4/{network}/validators": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_validators",
+            "summary": "List of validators",
+            "parameters": [
+              {
+                "name": "lastId",
+                "required": false,
+                "in": "query",
+                "schema": {
+                  "minimum": 1,
+                  "default": 1,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "pageDirection",
+                "required": false,
+                "in": "query",
+                "description": "either \"next\" or \"prev\"",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "perPage",
+                "required": false,
+                "in": "query",
+                "description": "Maximum allowed value: 1000",
+                "schema": {
+                  "minimum": 1,
+                  "maximum": 1000,
+                  "default": 10,
+                  "type": "number"
+                }
+              },
+              {
+                "name": "ordering",
+                "required": false,
+                "in": "query",
+                "description": "Sort by one or few fields. <br><br>You can sort only by: &nbsp;&nbsp;<code>id</code>,&nbsp;&nbsp;<code>status</code>,&nbsp;&nbsp;<code>public_key</code>,&nbsp;&nbsp;<code>owner_address</code><br><br>Examples: <ol><li><code>id:asc,public_key:desc</code><br><br></li><li><code>public_key</code><br><br></li><li>without specifying sort order: <code>owner_address,public_key</code> - equals to: <code>owner_address:asc,public_key:asc</code><br><br></li></ol>",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "ownerAddress",
+                "required": false,
+                "in": "query",
+                "description": "Filter by owner",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "search",
+                "required": false,
+                "in": "query",
+                "description": "Full-text search for entries matching all fields in a case-insensitive way",
+                "schema": {
+                  "default": "",
+                  "type": "string"
+                }
+              },
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Validators found and returned in response"
+              },
+              "404": {
+                "description": "Requested page number does not exists"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/duty_counts/{from_epoch}/{to_epoch}": {
+          "get": {
+            "operationId": "ValidatorsV4Controller_dutyCounts",
+            "summary": "Duty counts by validators in an epoch range",
+            "parameters": [
+              {
+                "name": "network",
+                "required": true,
+                "in": "path",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "from_epoch",
+                "required": true,
+                "in": "path",
+                "description": "Epoch number",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "to_epoch",
+                "required": true,
+                "in": "path",
+                "description": "Epoch number",
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Duty counts found and returned in response"
+              },
+              "404": {
+                "description": "Requested page number does not exists"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "tags": [
+              "Validators"
+            ]
+          }
+        },
+        "/api/v4/{network}/validators/validatorsByClusterHash/{clusterHash}": {
+          "parameters": [
+            {
+              "name": "network",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Network name"
+            },
+            {
+              "name": "clusterHash",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Cluster hash"
+            }
+          ],
+          "get": {
+            "summary": "Return validator public keys list by cluster hash",
+            "tags": [
+              "Validators"
+            ],
+            "responses": {
+              "200": {
+                "description": "Validators found and returned in response"
+              },
+              "400": {
+                "description": "Cluster hash has wrong format"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            }
+          }
+        },
+        "/api/v4/{network}/validators/validatorsWithdrawCredentials": {
+          "parameters": [
+            {
+              "name": "network",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "Network name"
+            }
+          ],
+          "post": {
+            "summary": "Return withdraw credentials",
+            "tags": [
+              "Validators"
+            ],
+            "responses": {
+              "200": {
+                "description": "Withdraw credentials found and returned in response"
+              },
+              "400": {
+                "description": "Public key has wrong format"
+              },
+              "500": {
+                "description": "Internal server error"
+              }
+            },
+            "requestBody": {
+              "description": "Public keys",
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "publicKeys": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "An array of public keys"
+                      }
+                    },
+                    "required": [
+                      "publicKeys"
+                    ]
+                  }
+                }
+              },
+              "components": {
+                "schemas": {
+                  "ValidatorPublicKeysDto": {
+                    "type": "object",
+                    "properties": {
+                      "publicKeys": {
+                        "type": "string[]"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": {
+        "title": "API",
+        "description": "",
+        "version": "0.0.1",
+        "contact": {}
+      },
+      "tags": [],
+      "servers": [],
+      "components": {
+        "schemas": {
+          "OperatorMetadataDto": {
+            "type": "object",
+            "properties": {
+              "operatorName": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "default": ""
+              },
+              "location": {
+                "type": "string",
+                "default": ""
+              },
+              "setupProvider": {
+                "type": "string",
+                "default": ""
+              },
+              "eth1NodeClient": {
+                "type": "string",
+                "default": ""
+              },
+              "eth2NodeClient": {
+                "type": "string",
+                "default": ""
+              },
+              "mevRelays": {
+                "type": "string",
+                "default": ""
+              },
+              "websiteUrl": {
+                "type": "string",
+                "default": ""
+              },
+              "twitterUrl": {
+                "type": "string",
+                "default": ""
+              },
+              "linkedinUrl": {
+                "type": "string",
+                "default": ""
+              },
+              "dkgAddress": {
+                "type": "string",
+                "default": ""
+              },
+              "logo": {
+                "type": "string",
+                "description": "Logo as a base64 encoded string"
+              },
+              "signature": {
+                "type": "string",
+                "description": "A sign message of the owner of the operator on the operator metadata"
+              }
+            },
+            "required": [
+              "signature"
+            ]
+          },
+          "DkgHealthCheckDto": {
+            "type": "object",
+            "properties": {
+              "dkgAddress": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "dkgAddress"
+            ]
+          }
+        }
+      }
+    }
