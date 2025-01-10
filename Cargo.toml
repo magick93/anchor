@@ -11,6 +11,7 @@ members = [
     "anchor/http_metrics",
     "anchor/network",
     "anchor/processor",
+    "anchor/signature_collector",
 ]
 resolver = "2"
 
@@ -25,6 +26,18 @@ clap = { version = "4.5.15", features = ["derive", "wrap_help"] }
 client = { path = "anchor/client" }
 dashmap = "6.1.0"
 database = { path = "anchor/database" }
+network = { path = "anchor/network" }
+version = { path = "anchor/common/version" }
+processor = { path = "anchor/processor" }
+ssv_types = { path = "anchor/common/ssv_types" }
+lighthouse_network = { git = "https://github.com/sigp/lighthouse", branch = "unstable" }
+task_executor = { git = "https://github.com/sigp/lighthouse", branch = "unstable", default-features = false, features = [ "tracing", ] }
+metrics = { git = "https://github.com/agemanning/lighthouse", branch = "modularize-vc" }
+validator_metrics = { git = "https://github.com/agemanning/lighthouse", branch = "modularize-vc" }
+sensitive_url = { git = "https://github.com/agemanning/lighthouse", branch = "modularize-vc" }
+slot_clock = { git = "https://github.com/agemanning/lighthouse", branch = "modularize-vc" }
+unused_port = { git = "https://github.com/sigp/lighthouse", branch = "unstable" }
+types = { git = "https://github.com/sigp/lighthouse", branch = "unstable" }
 derive_more = { version = "1.0.0", features = ["full"] }
 dirs = "5.0.1"
 discv5 = "0.9.0"
@@ -34,21 +47,13 @@ health_metrics = { git = "https://github.com/sigp/lighthouse", branch = "anchor"
 http_api = { path = "anchor/http_api" }
 http_metrics = { path = "anchor/http_metrics" }
 hyper = "1.4"
-lighthouse_network = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
-metrics = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
-network = { path = "anchor/network" }
 num_cpus = "1"
 openssl = "0.10.68"
 parking_lot = "0.12"
-processor = { path = "anchor/processor" }
 qbft = { path = "anchor/common/qbft" }
 rusqlite = "0.28.0"
-sensitive_url = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
 serde = { version = "1.0.208", features = ["derive"] }
-slot_clock = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
-ssv_types = { path = "anchor/common/ssv_types" }
 strum = { version = "0.24", features = ["derive"] }
-task_executor = { git = "https://github.com/sigp/lighthouse", branch = "anchor", default-features = false, features = [ "tracing", ] }
 tokio = { version = "1.39.2", features = [
     "rt",
     "rt-multi-thread",
@@ -59,10 +64,6 @@ tokio = { version = "1.39.2", features = [
 tower-http = { version = "0.6", features = ["cors"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["fmt", "env-filter"] }
-types = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
-unused_port = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
-validator_metrics = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
-version = { path = "anchor/common/version" }
 
 [profile.maxperf]
 inherits = "release"
