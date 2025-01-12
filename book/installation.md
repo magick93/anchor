@@ -1,3 +1,3 @@
 # Installation guide
 
-TODO
+How to install Anchor.
