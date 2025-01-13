@@ -5,6 +5,7 @@ Config
 config
 cryptographic
 dir
+ETH
 Ethereum
 Exercism
 github
