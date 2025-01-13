@@ -18,7 +18,7 @@ The Anchor Database serves as the backbone for storing and accessing SSV Network
 * **In-Memory Caching**: Efficient caching of frequently accessed data
 * **Multi-Index Access**: Flexible data access patters through multiple different keys
 * **Automatic State Recovery**: Rebuilds in-memory state from persistent storage on startup.
-* **Thread Safety**: Concurrent access support through DashMap implementations
+* **Thread Safety**: Concurrent access support through `DashMap` implementations
 
 
 ## Architecture
