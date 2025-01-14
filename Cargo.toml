@@ -12,6 +12,7 @@ members = [
   "anchor/http_metrics",
   "anchor/network",
   "anchor/processor",
+    "anchor/qbft_manager",
   "anchor/signature_collector",
 ]
 resolver = "2"
@@ -53,9 +54,11 @@ either = "1.13.0"
 futures = "0.3.30"
 health_metrics = { git = "https://github.com/sigp/lighthouse", branch = "anchor" }
 hyper = "1.4"
+indexmap = "2.7.0"
 num_cpus = "1"
 openssl = "0.10.68"
 parking_lot = "0.12"
+qbft_manager = { path = "anchor/common/qbft" }
 rusqlite = "0.28.0"
 serde = { version = "1.0.208", features = ["derive"] }
 strum = { version = "0.24", features = ["derive"] }
@@ -69,6 +72,8 @@ tokio = { version = "1.39.2", features = [
 tower-http = { version = "0.6", features = ["cors"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["fmt", "env-filter"] }
+tree_hash = "0.8"
+tree_hash_derive = "0.8"
 hex = "0.4.3"
 alloy = { version = "0.6.4", features = [
   "sol-types",
