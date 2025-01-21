@@ -1,0 +1,250 @@
+{% macro property_name(name) %}{% filter nospaces %}
+    {{ name | replace(from="-", to="") | when_numeric(prefix="n") | snakecase }}
+
+    {% if name | snakecase in [
+        "false", "fn", "for", "if", "impl", "in", "let", "loop", "match", "mod", "move",
+        "mut", "pub", "ref", "return", "self", "static", "struct", "super", "trait",
+        "true", "type", "unsafe", "use", "where", "while", "async", "await", "dyn",
+        "abstract", "become", "box", "do", "final", "macro", "override", "priv", "typeof",
+        "unsized", "virtual", "yield", "try", "result"
+    ] %}_{% endif %}
+{% endfilter %}{% endmacro property_name %}
+
+{% macro has_format(format, models) -%}
+{% for model in models | filter(attribute="object") -%}
+{% for property in model.object.properties -%}
+{% if property.validation and property.validation.format and property.validation.format == format %}1{% endif %}
+{%- endfor %}
+{%- endfor %}
+{%- endmacro has_format %}
+
+{% macro model_name(name) %}{% filter nospaces %}
+    {{ name  }}
+{% endfilter %}{% endmacro model_name %}
+
+{% macro is_primitive(type) %}{% filter nospaces %}{% endfilter %}{% endmacro is_primitive %}
+
+{% macro to_string(q, required, name='') %}{% filter nospaces %}
+{% if name != "" %}
+{% set real_name = name -%}
+{% else %}
+{% set real_name = "self." | concat(with=self::property_name(name = q.name)) -%}
+{% endif %}
+{% if q.type == "enum" %}
+    {{ real_name }}.to_string()
+{% elif q.type == "string" %}
+    {{ real_name }}.clone()
+{% else %}
+    format!("{}", {{ real_name }})
+{% endif %}
+{% endfilter %}{% endmacro to_string %}
+
+{% macro to_str(q, name='') %}{% filter nospaces %}
+{% if name != "" %}
+{% set real_name = name -%}
+{% else %}
+{% set real_name = "self." | concat(with=self::property_name(name = q.name)) -%}
+{% endif %}
+{% if q.type == "enum" %}
+    {{ real_name }}.to_string().as_ref()
+{% elif q.type == "string" %}
+    {{ real_name }}.as_ref()
+{% else %}
+    format!("{}", {{ real_name }}).as_ref()
+{% endif %}
+{% endfilter %}{% endmacro to_str %}
+
+{% macro enum_variant(name, base) %}{% filter nospaces %}
+{{ name | pascalcase | when_numeric(prefix=base) }}
+{% endfilter %}{% endmacro enum_variant %}
+
+{% macro get_validation(validation, regex_path="", form=false) %}{% filter nospaces %}
+    {% if validation.format and validation.format in ["decimal", "uuid"] %}
+    {% else %}
+        {% if validation.minLength %}length(min = {{ validation.minLength }}{% if validation.maxLength %}, max = {{ validation.maxLength }}{% endif %}), {% endif %}
+        {% if validation.maxLength and not validation.minLength %}length(max = {{ validation.maxLength }}), {% endif %}
+        {% if validation.minItems %}length(min = {{ validation.minItems }}{% if validation.maxItems %}, max = {{ validation.maxItems }}{% endif %}), {% endif %}
+        {% if validation.maxItems and not validation.minItems %}length(max = {{ validation.maxItems }}), {% endif %}
+        {% if form %}inner({% endif %}
+        {% if validation.pattern %}pattern({{ regex_path }}{{ validation.pattern.name | snakecase | upper }}), {% endif %}
+        {% if validation.minimum is defined or validation.maximum is defined %}
+        range(
+            {% if validation.minimum is defined %}min = {{ validation.minimum }}{% if validation.maximum is defined %}, {% endif %}{% endif %}
+            {% if validation.maximum is defined %}max = {{ validation.maximum }}{% endif %}
+        )
+        {% endif %}
+        {% if form %}){% endif %}
+    {% endif %}
+{% endfilter %}{% endmacro get_validation %}
+
+{% macro model_validation(model, options, is_required=true, regex_path="", style="") %}{% filter nospaces %}
+    {%- if not options.skipValidate %}
+        {%- if model.validation and model.type != 'enum' %}
+            {%- if self::get_validation(validation = model.validation, form = style == "form") | length %}
+                #[garde(
+                    {% if not is_required -%}inner({%- endif -%}
+                    {{ self::get_validation(validation = model.validation, regex_path = regex_path, form = style == "form") }}
+                    {%- if model.type == "array" and model.model.validation and model.model.type != "enum" %}
+                        {% if not model.required -%}inner({%- endif -%}
+                        {%- if model.nullable -%}inner({%- endif -%}
+                        inner({{ self::get_validation(validation = model.model.validation, regex_path = regex_path) }})
+                        {%- if model.nullable -%}){%- endif %}
+                        {%- if not model.required -%}){%- endif %}
+                    {% endif %}
+                    {%- if not is_required -%}){%- endif %}
+                )]
+            {%- else %}
+                #[garde(skip)]
+            {%- endif %}
+        {%- elif model.type == 'array' and model.model.validation and model.model.type != "enum" %}
+            {%- if self::get_validation(validation = model.model.validation, form = style == "form") | length %}
+                #[garde(
+                    {%- if not is_required -%}inner({%- endif -%}
+                    {%- if not model.required -%}inner({%- endif -%}
+                    {%- if model.nullable -%}inner({%- endif -%}
+                    inner({{ self::get_validation(validation = model.model.validation, regex_path = regex_path, form = style == "form") }})
+                    {%- if model.nullable -%}){%- endif %}
+                    {%- if not model.required -%}){%- endif -%}
+                    {%- if not is_required -%}){%- endif -%}
+                )]
+            {%- else %}
+                #[garde(skip)]
+            {%- endif %}
+        {%- elif self::need_nested_validation(property=model) == "1" %}
+            #[garde(dive)]
+        {%- else %}
+            #[garde(skip)]
+        {%- endif %}
+    {%- endif %}
+{% endfilter %}{% endmacro model_validation %}
+
+{% macro enum_validation(option, options, regex_path="") %}{% filter nospaces %}
+    {%- if not options.skipValidate %}
+        {%- if option.x._discriminator.value.model %}
+            #[garde(dive)]
+        {%- else %}
+            #[garde(skip)]
+        {%- endif %}
+    {%- endif %}
+{% endfilter %}{% endmacro model_validation %}
+
+{% macro type(property, ns="") %}{% filter nospaces %}
+{% if property.nullable %}Option<{% endif %}
+
+{# todo: model name cannot be one of json-schema types, infinite loop, check #}
+
+{% if property.x.type %}
+    {{ property.x.type }}
+{% elif property.validation and property.validation.format and property.validation.format == "decimal" %}
+    Decimal
+{% elif property.type == "string" %}
+    {% if property.validation and property.validation.format and property.validation.format == "uuid" %}
+    uuid::Uuid
+    {% elif property.validation and property.validation.format and property.validation.format == "date-time" %}
+    DateTime<Utc>
+    {% else %}
+    String
+    {% endif %}
+{% elif property.type == "boolean" %}
+    bool
+{% elif property.type == "integer" and property.validation.minimum | default(value = -1) >= 0 %}
+    u64
+{% elif property.type == "integer" %}
+    i64
+{% elif property.type == "number" %}
+    f64
+{% elif property.type == "any" %}
+    serde_json::Value
+{% elif property.type == "array" and property.model %}
+    Vec<{{ self::type(property = property.model, ns = ns) }}>
+{% elif property.type == "map" and property.model %}
+    BTreeMap<String, {{ self::type(property = property.model, ns = ns) }}>
+{% elif property.type == "object" and property.model %}
+    {% if ns %}{{ ns }}::{% endif %}{{ self::model_name(name = property.model.type) }}
+{% elif property.type == "wrapper" and property.model %}
+    {% if ns %}{{ ns }}::{% endif %}{{ self::model_name(name = property.model.name) }}
+{% elif property.type == "enum" and property.model %}
+    {% if ns %}{{ ns }}::{% endif %}{{ self::model_name(name = property.model.name) }}Variant
+{% endif %}
+
+{% if property.nullable %}>{% endif %}
+{% endfilter %}{% endmacro type %}
+
+{% macro do_not_modify() %}
+//
+// This file is generated from openapi specification. Please do not modify it.
+// It should be .gitignored
+//
+#![allow(warnings)]
+#![allow(clippy::all)]
+{% endmacro do_not_modify %}
+
+{% macro get_auth_header(security) -%}
+{% if security.scheme == 'basic' %}Authorization{% else %}{{ security.name }}{% endif %}
+{%- endmacro get_auth_header %}
+
+{% macro endpoint_return(success, endpoint, headers, options) -%}{% filter nospaces %}Result<
+    {% if success == "no-models" or success.contentType is not starting_with("application/json") %}
+        {% if success.model and success.model.type == "object" and success.model.model and success.model.model.name %}
+            {{ self::endpoint_model_response(success = success, headers = headers) }}
+        {% elif success.model and success.model.type == "wrapper" and success.model.model and success.model.model.type %}
+            {{ self::endpoint_model_response(success = success, headers = headers) }}
+        {% else %}
+            {{ self::endpoint_default_response(endpoint = endpoint, options = options) }}
+        {% endif %}
+    {% elif success.model %}
+        {{ self::endpoint_model_response(success = success, headers = headers) }}
+    {% else %}
+    reqwest::Response
+    {% endif %},
+    {{ self::endpoint_error(endpoint = endpoint, options = options) }}
+>{% endfilter %}{%- endmacro skipped_headers %}
+
+{% macro endpoint_model_response(success, headers) -%}
+    {% if headers | length > 0 %}({% endif %}
+    {{ self::type(property = success.model, ns = "model") }}
+    {% if headers | length > 0 %}, reqwest::header::HeaderMap
+    ){% endif %}
+{%- endmacro endpoint_model_response %}
+{% macro endpoint_default_response(endpoint, options) -%}endpoint::{{ endpoint.operation | pascalcase }}Response{%- endmacro endpoint_default_response %}
+
+{% macro endpoint_error(endpoint, options) -%}{% filter nospaces %}
+{% if options.errorWrapperType %}{{ options.errorWrapperType }}{% else %}ClientError<{{ self::endpoint_error_body(endpoint = endpoint, options = options) }}>{% endif %}
+{% endfilter %}{%- endmacro skipped_headers %}
+
+{% macro endpoint_error_body(endpoint, options) -%}{% filter nospaces %}
+{% if options.globalError %}
+    {{ options.globalError }}
+{% else %}
+    endpoint::{{ endpoint.operation | pascalcase }}Error
+{% endif %}
+{% endfilter %}{%- endmacro skipped_headers %}
+
+{% macro endpoint_map_error(reqwest, endpoint, options) %}{% filter nospaces %}
+    ClientError::<{{ self::endpoint_error_body(endpoint = endpoint, options = options) }}>::from_reqwest({{ reqwest }})
+{% endfilter %}{% endmacro endpoint_map_error %}
+
+{% macro endpoint_handle_error(response, endpoint, options) %}{% filter nospaces %}
+    ClientError::<{{ self::endpoint_error_body(endpoint = endpoint, options = options) }}>::from_response({{ response }}).await
+{% endfilter %}{% endmacro endpoint_handle_error %}
+
+{% macro model_to_string(name, property) %}{% filter nospaces %}
+{% if property.type == "enum" %}
+{{ name }}.to_string()
+{% elif property.type == "string" %}
+{{ name }}
+{% else %}
+/* todo */
+{% endif %}
+{% endfilter %}{% endmacro model_to_string %}
+
+{% macro need_nested_validation(property) %}{% filter nospaces %}
+    {% if property.model and property.model.type == "array" and property.model.model %}
+        {{ self::need_nested_validation(property = property.model.model) }}
+    {% elif property.type == "map" and property.model.type == "any" %}
+        0
+    {% elif property.type != "enum" and not property.x.type and property.model and property.model.type not in [
+        "string", "number", "integer", "boolean", "bool", "null", "enum"] %}
+        1
+    {% endif %}
+{% endfilter %}{% endmacro need_nested_validation %}
